@@ -9,14 +9,14 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $verify_password = $_POST['verify_password'];
 $country = $_POST['country'];
-$county = $_POST['county'];
+$postcode = $_POST['postcode'];
 
 if ($password != $verify_password){
     $_SESSION['index_error']="2";
     header("Location: ./");
 }
 else {
-    $user = new User(0,$first_name,$last_name,$email,$password,$country,$county,"","bootstrap.min.css");
+    $user = new User(0,$first_name,$last_name,$email,$password,$country,$postcode,"","sandstone.css","");
     $user->add();
     header("Location: ./");
 }

@@ -7,20 +7,20 @@
         public $email;
         public $password;
         public $country;
-        public $county;
+        public $postcode;
         public $preferences;
         public $theme;
         public $level;
 
 
-        function __construct($id,$first_name,$last_name,$email,$password,$country,$county,$preferences,$theme,$level){
+        function __construct($id,$first_name,$last_name,$email,$password,$country,$postcode,$preferences,$theme,$level){
             $this->id=$id;
             $this->first_name = $first_name;
             $this->last_name = $last_name;
             $this->email = $email;
             $this->password = $password;
             $this->country = $country;
-            $this->county = $county;
+            $this->postcode = $postcode;
             $this->preferences = $preferences;
             $this->theme = $theme;
             $this->level = $level;
@@ -34,7 +34,7 @@
             if ($num ==1){
                 $row = mysqli_fetch_assoc($result);
                 if (password_verify($password,$row['password'])){
-                    return new User($row["id"], $row['first_name'], $row['last_name'], $row['email'], $row['password'], $row["country"],$row["county"],$row["preferences"],$row["theme"],$row["level"]);
+                    return new User($row["id"], $row['first_name'], $row['last_name'], $row['email'], $row['password'], $row["country"],$row["postcode"],$row["preferences"],$row["theme"],$row["level"]);
                 }
             }
             return false;
@@ -45,7 +45,7 @@
             $sql = "SELECT * FROM users WHERE id=".$id;
             $result = mysqli_query($conn,$sql);
             $row = mysqli_fetch_assoc($result);
-            return new User($row["id"], $row['first_name'], $row['last_name'], $row['email'], $row['password'], $row["country"],$row["county"],$row["preferences"],$row["theme"],$row["level"]);
+            return new User($row["id"], $row['first_name'], $row['last_name'], $row['email'], $row['password'], $row["country"],$row["postcode"],$row["preferences"],$row["theme"],$row["level"]);
         }
 
         function add(){
@@ -62,10 +62,10 @@
             }
             
             else {
-            $query = "INSERT INTO users (first_name,last_name,email,password,country,county,preferences,theme) VALUES (?,?,?,?,?,?,?,?)";
+            $query = "INSERT INTO users (first_name,last_name,email,password,country,postcode,preferences,theme) VALUES (?,?,?,?,?,?,?,?)";
             $stmt = $conn->prepare($query);
             $hash = password_hash($this->password, PASSWORD_DEFAULT);
-            $stmt->bind_param("ssssssss",$this->first_name,$this->last_name,$this->email,$hash,$this->country,$this->county,$this->preferences,$this->theme);
+            $stmt->bind_param("ssssssss",$this->first_name,$this->last_name,$this->email,$hash,$this->country,$this->postcode,$this->preferences,$this->theme);
             $stmt->execute();
 
             header("Location: ./");

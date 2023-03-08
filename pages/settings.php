@@ -27,8 +27,12 @@ else {
       <div class="row pt-5">
         <div class="col-md-3">
         </div>
+
         <!-- This section will show the user their current settings and have a button which will open a modal for them to change it -->
+
         <div class="col-md-6">
+            
+            <!-- First name -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
@@ -44,6 +48,8 @@ else {
                     </div>
                 </div>
             </div>
+            
+            <!-- Last name -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
@@ -59,6 +65,8 @@ else {
                     </div>
                 </div>
             </div>
+
+            <!-- Email -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
@@ -74,13 +82,15 @@ else {
                     </div>
                 </div>
             </div>
+
+            <!-- Country -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="country">Country</label>
+                        <label for="country_label">Country</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="country" name="country" placeholder="<?php echo $user->country?>" readonly="">
+                                <input type="text" class="form-control" id="country_label" name="country" placeholder="<?php echo $user->country?>" readonly="">
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#countrymodal">Edit</button>
@@ -89,21 +99,25 @@ else {
                     </div>
                 </div>
             </div>
+
+            <!-- Postcode -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
-                        <label for="county">County</label>
+                        <label for="postcode_label">Postcode</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="county" name="county" placeholder="<?php echo $user->county?>" readonly="">
+                                <input type="text" class="form-control" id="postcode_label" name="postcode" placeholder="<?php echo $user->postcode?>" readonly="">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#countymodal">Edit</button>
+                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#postcodemodal">Edit</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Preferences -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
@@ -116,6 +130,8 @@ else {
                     </div>
                 </div>
             </div>
+
+            <!-- Theme -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
@@ -128,20 +144,25 @@ else {
                     </div>
                 </div>
             </div>
+
+            <!-- Password -->
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
                         <label for="password">Password</label>
                         <div class="row">
                             <div class="col-md-10">
-                                <button type="button" id="password" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#password" style="width:95%;">Edit Password</button>
+                                <button type="button" id="password" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#passwordmodal" style="width:95%;">Edit Password</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- This section contains the modals for each of the settings -->
+
+        <!-- Modal for the first name input -->
         <div class="modal fade" id="firstname" tabindex="-1" aria-labelledby="firstname_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -160,6 +181,7 @@ else {
                 </div>
             </div>
         </div>
+        <!-- Modal for the last name input -->
         <div class="modal fade" id="lastname" tabindex="-1" aria-labelledby="lastname_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -178,6 +200,7 @@ else {
                 </div>
             </div>
         </div>
+        <!-- Modal for the email input -->
         <div class="modal fade" id="emailmodal" tabindex="-1" aria-labelledby="email_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -187,7 +210,7 @@ else {
                     </div>
                     <div class="modal-body">
                         <form action="settings-action.php" method="post">
-                            <input type="text"
+                            <input type="email"
                                 class="form-control" name="email"  aria-describedby="helpId" value="<?php echo $user->email?>">
                             <small id="helpId" class="form-text text-muted pb-2">Enter your email above</small>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -196,6 +219,7 @@ else {
                 </div>
             </div>
         </div>
+        <!-- Modal for the country selection -->
         <div class="modal fade" id="countrymodal" tabindex="-1" aria-labelledby="country_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -204,28 +228,27 @@ else {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="settings-action.php" method="post">
-                            <input type="text"
-                                class="form-control" name="country"  aria-describedby="helpId" value="<?php echo $user->country?>">
-                            <small id="helpId" class="form-text text-muted pb-2">Select your country above</small>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                        <select id="country" name="country" aria-describedby="helpId" class="form-control">
+                            <option value="United Kingdom">United Kingdom</option>
+                        </select>
+                        <small id="helpId" class="form-text text-muted pb-2">More countries will be added in the future</small>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="countymodal" tabindex="-1" aria-labelledby="county_label" aria-hidden="true">
+        <!-- Modal for the Postcode selection -->
+        <div class="modal fade" id="postcodemodal" tabindex="-1" aria-labelledby="postcode_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="county_label">County</h5>
+                        <h5 class="modal-title" id="postcode_label">Postcode</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="settings-action.php" method="post">
+                    <form action="settings-action.php" method="post">
                             <input type="text"
-                                class="form-control" name="County"  aria-describedby="helpId" value="<?php echo $user->county?>">
-                            <small id="helpId" class="form-text text-muted pb-2">Select your county above</small>
+                                class="form-control" name="postcode"  aria-describedby="helpId" value="<?php echo $user->postcode?>">
+                            <small id="helpId" class="form-text text-muted pb-2">Enter your postcode above</small>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
@@ -233,6 +256,148 @@ else {
             </div>
         </div>
 
+        <!-- Modal for the Preference selection -->
+        <div class="modal fade" id="preferencesmodal" tabindex="-1" aria-labelledby="preference_label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="preference_label">Preference</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="settings-action.php" method="post">
+                            <fieldset class="form-group">
+                                
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="hayfever" name="hayfever">
+                                    <label class="form-check-label" for="hayfever">
+                                    Hayfever
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="asthma" name="asthma">
+                                    <label class="form-check-label" for="asthma">
+                                    Asthma
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="air_quality" name="air_quality">
+                                    <label class="form-check-label" for="air_quality">
+                                    Air Quality
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="humidity" name="humidity">
+                                    <label class="form-check-label" for="humidity">
+                                    Humidity
+                                    </label>
+                                </div>
+
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for the Theme selection -->
+        <div class="modal fade" id="thememodal" tabindex="-1" aria-labelledby="theme_label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="theme_label">Theme</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="settings-action.php" method="post">
+                            <fieldset class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme" id="cyborg" value="cyborg.css"
+                                    <?php if ($user->theme == "cyborg.css"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="cyborg">
+                                    Cyborg
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme" id="flatly" value="flatly.css"
+                                    <?php if ($user->theme == "flatly.css"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="flatly">
+                                    Flatly
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme" id="journal" value="journal.css"
+                                    <?php if ($user->theme == "journal.css"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="journal">
+                                    Journal
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme" id="sandstone" value="sandstone.css"
+                                    <?php if ($user->theme == "sandstone.css"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="sandstone">
+                                    Sandstone
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme" id="slate" value="slate.css"
+                                    <?php if ($user->theme == "slate.css"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="slate">
+                                    Slate
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="theme" id="superhero" value="superhero.css"
+                                    <?php if ($user->theme == "superhero.css"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="superhero">
+                                    Superhero
+                                    </label>
+                                </div>
+                                
+                                
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal for Password changing -->
+        <div class="modal fade" id="passwordmodal" tabindex="-1" aria-labelledby="password_label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="password_label">Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="settings-action.php" method="post">
+                            <fieldset class="form-group">
+                                <div class="form-group">
+                                    <label for="current_password" class="form-label mt-4">Password</label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new_password" class="form-label mt-4">New Password</label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="verify_password" class="form-label mt-4">Verify Password</label>
+                                    <input type="password" class="form-control" id="verify_password" name="verify_password">
+                                </div>
+                                
+                                
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
         <div class="col-md-3">
         </div>
     </div> 

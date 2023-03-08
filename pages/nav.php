@@ -1,13 +1,20 @@
 <?php 
 $user = User::load_by_id($_SESSION["user"]);
 
+$active_dashboard = "";
+$active_settings = "";
+
+// finds what page the user is on and sets the active class for the navbar
+
 if (str_ends_with($_SERVER["PHP_SELF"],"dashboard.php")){
   $active_dashboard = "active";
 }
 else if (str_ends_with($_SERVER["PHP_SELF"],"settings.php")){
-    $active_settings = "active";
+  $active_settings = "active";
 }
 ?>
+
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-static-top" >
   <div class="container-fluid">
     <a class="navbar-brand" href="./dashboard.php">Health Advice Group</a>
@@ -16,6 +23,9 @@ else if (str_ends_with($_SERVER["PHP_SELF"],"settings.php")){
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto">
+        <li>
+          <a class="nav-link <?php echo $active_dashboard ?> " href="./dashboard.php">Dashboard</a>
+        </li>
         <li class="nav-item">
         <!-- Button trigger modal -->
           <a class="nav-link" data-bs-toggle="modal" data-bs-target="#tripmode">Trip Mode</a>
@@ -40,20 +50,19 @@ else if (str_ends_with($_SERVER["PHP_SELF"],"settings.php")){
       <div class="d-flex">
         <ul class="navbar-nav me-auto">
           <?php
+
+          // if the user is an admin, show the admin panel link
             if ($user->level=="Admin"):?>
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="admin-delete-message.php">Mass Delete Messages</a>
-                <a class="dropdown-item" href="admin-user.php">Edit User</a>
-            </div>
+            <li class="nav-link">
+              <a class="nav-link" href="./admin.php">Admin Panel</a>
             </li>
             <?php endif;?>
+
           <li>
             <a class="nav-link" href="./report.php">Issue Report</a>
           </li>
           <li>
-            <a class="nav-link" href="./settings.php">Settings</a>
+            <a class="nav-link <?php echo $active_settings ?> " href="./settings.php">Settings</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./logout-action.php">Logout</a>
