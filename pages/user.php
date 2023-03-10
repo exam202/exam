@@ -45,7 +45,12 @@
             $sql = "SELECT * FROM users WHERE id=".$id;
             $result = mysqli_query($conn,$sql);
             $row = mysqli_fetch_assoc($result);
-            return new User($row["id"], $row['first_name'], $row['last_name'], $row['email'], $row['password'], $row["country"],$row["postcode"],$row["preferences"],$row["theme"],$row["level"]);
+
+            $sql = "SELECT * FROM preferences WHERE user_id=".$id;
+            $result = mysqli_query($conn,$sql);
+            $preferences = mysqli_fetch_assoc($result);
+
+            return new User($row["id"], $row['first_name'], $row['last_name'], $row['email'], $row['password'], $row["country"],$row["postcode"],$preferences,$row["theme"],$row["level"]);
         }
 
         function add(){
@@ -62,13 +67,22 @@
             }
             
             else {
-            $query = "INSERT INTO users (first_name,last_name,email,password,country,postcode,preferences,theme) VALUES (?,?,?,?,?,?,?,?)";
-            $stmt = $conn->prepare($query);
-            $hash = password_hash($this->password, PASSWORD_DEFAULT);
-            $stmt->bind_param("ssssssss",$this->first_name,$this->last_name,$this->email,$hash,$this->country,$this->postcode,$this->preferences,$this->theme);
-            $stmt->execute();
+                $query = "INSERT INTO users (first_name,last_name,email,password,country,postcode,preferences,theme) VALUES (?,?,?,?,?,?,?,?)";
+                $stmt = $conn->prepare($query);
+                $hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $stmt->bind_param("ssssssss",$this->first_name,$this->last_name,$this->email,$hash,$this->country,$this->postcode,$this->preferences,$this->theme);
+                $stmt->execute();
 
-            header("Location: ./");
+                $sql = "SELECT * FROM users WHERE email='".$this->email."'";
+                $result = mysqli_query($conn,$sql);
+                $row = mysqli_fetch_assoc($result);
+
+                $query = "INSERT INTO preferences (user_id) VALUES (?)";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("i",$row["id"]);
+                $stmt->execute();
+
+                header("Location: ./");
             } 
         }
 
@@ -83,7 +97,14 @@
             
         }
 
-
+        function update(){
+            $conn = connect();
+            $query = "UPDATE users SET first_name=?,last_name=?,email=?,password=?,country=?,postcode=?,preferences=?,theme=? WHERE id=?";
+            $stmt = $conn->prepare($query);
+            $hash = password_hash($this->password, PASSWORD_DEFAULT);
+            $stmt->bind_param("ssssssisi",$this->first_name,$this->last_name,$this->email,$hash,$this->country,$this->postcode,$this->preferences,$this->theme,$this->id);
+            $stmt->execute();
+        }
         
     }
 ?>

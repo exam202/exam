@@ -39,7 +39,7 @@ else {
                         <label for="first_name">First Name</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="<?php echo $user->first_name?>" readonly="">
+                                <input required type="text" class="form-control" id="first_name" name="first_name" placeholder="<?php echo $user->first_name?>" readonly="">
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#firstname">Edit</button>
@@ -56,7 +56,7 @@ else {
                         <label for="last_name">Last Name</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="<?php echo $user->last_name?>" readonly="">
+                                <input required type="text" class="form-control" id="last_name" name="last_name" placeholder="<?php echo $user->last_name?>" readonly="">
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lastname">Edit</button>
@@ -73,7 +73,7 @@ else {
                         <label for="email">Email</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="<?php echo $user->email?>" readonly="">
+                                <input required type="text" class="form-control" id="email" name="email" placeholder="<?php echo $user->email?>" readonly="">
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#emailmodal">Edit</button>
@@ -90,7 +90,7 @@ else {
                         <label for="country_label">Country</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="country_label" name="country" placeholder="<?php echo $user->country?>" readonly="">
+                                <input required type="text" class="form-control" id="country_label" name="country" placeholder="<?php echo $user->country?>" readonly="">
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#countrymodal">Edit</button>
@@ -107,7 +107,7 @@ else {
                         <label for="postcode_label">Postcode</label>
                         <div class="row"> 
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="postcode_label" name="postcode" placeholder="<?php echo $user->postcode?>" readonly="">
+                                <input required type="text" class="form-control" id="postcode_label" name="postcode" placeholder="<?php echo $user->postcode?>" readonly="">
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#postcodemodal">Edit</button>
@@ -162,7 +162,7 @@ else {
 
         <!-- This section contains the modals for each of the settings -->
 
-        <!-- Modal for the first name input -->
+        <!-- Modal for the first name input required -->
         <div class="modal fade" id="firstname" tabindex="-1" aria-labelledby="firstname_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -172,7 +172,7 @@ else {
                     </div>
                     <div class="modal-body">
                         <form action="settings-action.php" method="post">
-                            <input type="text"
+                            <input required type="text"
                                 class="form-control" name="first_name"  aria-describedby="helpId" value="<?php echo $user->first_name?>">
                             <small id="helpId" class="form-text text-muted pb-2">Enter your first name above</small>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -181,7 +181,7 @@ else {
                 </div>
             </div>
         </div>
-        <!-- Modal for the last name input -->
+        <!-- Modal for the last name input required -->
         <div class="modal fade" id="lastname" tabindex="-1" aria-labelledby="lastname_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -191,7 +191,7 @@ else {
                     </div>
                     <div class="modal-body">
                         <form action="settings-action.php" method="post">
-                            <input type="text"
+                            <input required type="text"
                                 class="form-control" name="last_name"  aria-describedby="helpId" value="<?php echo $user->last_name?>">
                             <small id="helpId" class="form-text text-muted pb-2">Enter your last name above</small>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -200,7 +200,7 @@ else {
                 </div>
             </div>
         </div>
-        <!-- Modal for the email input -->
+        <!-- Modal for the email input required -->
         <div class="modal fade" id="emailmodal" tabindex="-1" aria-labelledby="email_label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -210,7 +210,7 @@ else {
                     </div>
                     <div class="modal-body">
                         <form action="settings-action.php" method="post">
-                            <input type="email"
+                            <input required type="email"
                                 class="form-control" name="email"  aria-describedby="helpId" value="<?php echo $user->email?>">
                             <small id="helpId" class="form-text text-muted pb-2">Enter your email above</small>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -246,7 +246,7 @@ else {
                     </div>
                     <div class="modal-body">
                     <form action="settings-action.php" method="post">
-                            <input type="text"
+                            <input required type="text"
                                 class="form-control" name="postcode"  aria-describedby="helpId" value="<?php echo $user->postcode?>">
                             <small id="helpId" class="form-text text-muted pb-2">Enter your postcode above</small>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -267,27 +267,27 @@ else {
                     <div class="modal-body">
                         <form action="settings-action.php" method="post">
                             <fieldset class="form-group">
-                                
+                                <span>Please check all which you would like to see.</span>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="hayfever" name="hayfever">
+                                    <input required class="form-check-input"required  type="checkbox" value="" id="hayfever" name="hayfever" <?php if ($user->preferences["hayfever"] =="1"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="hayfever">
                                     Hayfever
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="asthma" name="asthma">
-                                    <label class="form-check-label" for="asthma">
-                                    Asthma
+                                    <input required class="form-check-input"required  type="checkbox" value="" id="wind" name="wind" <?php if ($user->preferences["wind"] =="1"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="wind">
+                                    Wind
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="air_quality" name="air_quality">
+                                    <input required class="form-check-input"required  type="checkbox" value="" id="air_quality" name="air_quality" <?php if ($user->preferences["air_quality"] =="1"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="air_quality">
                                     Air Quality
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="humidity" name="humidity">
+                                    <input required class="form-check-input"required  type="checkbox" value="" id="humidity" name="humidity" <?php if ($user->preferences["humidity"] =="1"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="humidity">
                                     Humidity
                                     </label>
@@ -313,42 +313,42 @@ else {
                         <form action="settings-action.php" method="post">
                             <fieldset class="form-group">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="theme" id="cyborg" value="cyborg.css"
+                                    <input required class="form-check-input"required  type="radio" name="theme" id="cyborg" value="cyborg.css"
                                     <?php if ($user->theme == "cyborg.css"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="cyborg">
                                     Cyborg
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="theme" id="flatly" value="flatly.css"
+                                    <input required class="form-check-input"required  type="radio" name="theme" id="flatly" value="flatly.css"
                                     <?php if ($user->theme == "flatly.css"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="flatly">
                                     Flatly
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="theme" id="journal" value="journal.css"
+                                    <input required class="form-check-input"required  type="radio" name="theme" id="journal" value="journal.css"
                                     <?php if ($user->theme == "journal.css"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="journal">
                                     Journal
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="theme" id="sandstone" value="sandstone.css"
+                                    <input required class="form-check-input"required  type="radio" name="theme" id="sandstone" value="sandstone.css"
                                     <?php if ($user->theme == "sandstone.css"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="sandstone">
                                     Sandstone
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="theme" id="slate" value="slate.css"
+                                    <input required class="form-check-input"required  type="radio" name="theme" id="slate" value="slate.css"
                                     <?php if ($user->theme == "slate.css"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="slate">
                                     Slate
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="theme" id="superhero" value="superhero.css"
+                                    <input required class="form-check-input"required  type="radio" name="theme" id="superhero" value="superhero.css"
                                     <?php if ($user->theme == "superhero.css"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="superhero">
                                     Superhero
@@ -377,15 +377,15 @@ else {
                             <fieldset class="form-group">
                                 <div class="form-group">
                                     <label for="current_password" class="form-label mt-4">Password</label>
-                                    <input type="password" class="form-control" id="current_password" name="current_password">
+                                    <input required type="password" class="form-control" id="current_password" name="current_password">
                                 </div>
                                 <div class="form-group">
                                     <label for="new_password" class="form-label mt-4">New Password</label>
-                                    <input type="password" class="form-control" id="new_password" name="new_password">
+                                    <input required type="password" class="form-control" id="new_password" name="new_password">
                                 </div>
                                 <div class="form-group">
                                     <label for="verify_password" class="form-label mt-4">Verify Password</label>
-                                    <input type="password" class="form-control" id="verify_password" name="verify_password">
+                                    <input required type="password" class="form-control" id="verify_password" name="verify_password">
                                 </div>
                                 
                                 
