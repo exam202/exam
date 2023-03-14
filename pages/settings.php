@@ -269,25 +269,25 @@ else {
                             <fieldset class="form-group">
                                 <span>Please check all which you would like to see.</span>
                                 <div class="form-check">
-                                    <input required class="form-check-input"required  type="checkbox" value="" id="hayfever" name="hayfever" <?php if ($user->preferences["hayfever"] =="1"){echo 'checked=""';}?>>
-                                    <label class="form-check-label" for="hayfever">
-                                    Hayfever
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input required class="form-check-input"required  type="checkbox" value="" id="wind" name="wind" <?php if ($user->preferences["wind"] =="1"){echo 'checked=""';}?>>
+                                    <input class="form-check-input"  type="checkbox" value="" id="wind" name="wind" <?php if ($user->preferences["wind"] =="1"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="wind">
                                     Wind
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input required class="form-check-input"required  type="checkbox" value="" id="air_quality" name="air_quality" <?php if ($user->preferences["air_quality"] =="1"){echo 'checked=""';}?>>
+                                    <input class="form-check-input"  type="checkbox" value="" id="uv_level" name="uv_level" <?php if ($user->preferences["uv_level"] =="1"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="uv_level">
+                                    UV Level
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input"  type="checkbox" value="" id="air_quality" name="air_quality" <?php if ($user->preferences["air_quality"] =="1"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="air_quality">
                                     Air Quality
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input required class="form-check-input"required  type="checkbox" value="" id="humidity" name="humidity" <?php if ($user->preferences["humidity"] =="1"){echo 'checked=""';}?>>
+                                    <input class="form-check-input"  type="checkbox" value="" id="humidity" name="humidity" <?php if ($user->preferences["humidity"] =="1"){echo 'checked=""';}?>>
                                     <label class="form-check-label" for="humidity">
                                     Humidity
                                     </label>

@@ -39,32 +39,36 @@ if (isset($_POST["theme"])){
     header("Location: ./settings.php");
 }
 
-if (isset($_POST["hayfever"]) || isset($_POST["wind"]) || isset($_POST["air_quality"]) || isset($_POST["humidity"])){
-    if (isset($_POST["hayfever"])){
-        $hayfever = "1";
-    }
-    else {
-        $hayfever = "0";
-    }
+if (isset($_POST["uv_level"]) || isset($_POST["wind"]) || isset($_POST["air_quality"]) || isset($_POST["humidity"])){
     if (isset($_POST["wind"])){
-        $wind = "1";
+        $wind = 1;
     }
     else {
-        $wind = "0";
+        $wind = 0;
     }
     if (isset($_POST["air_quality"])){
-        $air_quality = "1";
+        $air_quality = 1;
     }
     else {
-        $air_quality = "0";
+        $air_quality = 0;
     }
     if (isset($_POST["humidity"])){
-        $humidity = "1";
+        $humidity = 1;
     }
     else {
-        $humidity = "0";
+        $humidity = 0;
     }
-    
+    if (isset($_POST["uv_level"])){
+        $uv_level = 1;
+    }
+    else {
+        $uv_level = 0;
+    }
+    $conn = connect();
+    $query = "UPDATE preferences SET wind=?,air_quality=?,humidity=?,uv_level=? WHERE user_id=?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("iiiii",$wind,$air_quality,$humidity,$uv_level,$user->id);
+    $stmt->execute();
     header("Location: ./settings.php");
 }
 

@@ -2,12 +2,20 @@
 $user = User::load_by_id($_SESSION["user"]);
 
 $active_dashboard = "";
+$active_health = "";
+$active_report = "";
 $active_settings = "";
 
 // finds what page the user is on and sets the active class for the navbar
 
 if (str_ends_with($_SERVER["PHP_SELF"],"dashboard.php")){
   $active_dashboard = "active";
+}
+else if (str_ends_with($_SERVER["PHP_SELF"],"health.php")){
+  $active_health = "active";
+}
+else if (str_ends_with($_SERVER["PHP_SELF"],"report.php")){
+  $active_report = "active";
 }
 else if (str_ends_with($_SERVER["PHP_SELF"],"settings.php")){
   $active_settings = "active";
@@ -25,6 +33,9 @@ else if (str_ends_with($_SERVER["PHP_SELF"],"settings.php")){
       <ul class="navbar-nav me-auto">
         <li>
           <a class="nav-link <?php echo $active_dashboard ?> " href="./dashboard.php">Dashboard</a>
+        </li>
+        <li>
+          <a class="nav-link <?php echo $active_health ?> " href="./health.php">Health Tracker</a>
         </li>
         <li class="nav-item">
         <!-- Button trigger modal -->
@@ -59,7 +70,7 @@ else if (str_ends_with($_SERVER["PHP_SELF"],"settings.php")){
             <?php endif;?>
 
           <li>
-            <a class="nav-link" href="./report.php">Issue Report</a>
+            <a class="nav-link <?php echo $active_report ?>" href="./report.php">Issue Report</a>
           </li>
           <li>
             <a class="nav-link <?php echo $active_settings ?> " href="./settings.php">Settings</a>
