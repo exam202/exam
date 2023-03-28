@@ -13,6 +13,7 @@
             $conn = connect();
 
             session_destroy();
+            $_SESSION["notification"] = "9";
             header("Location: ./");
         ?>
     </body> 

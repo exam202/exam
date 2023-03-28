@@ -7,37 +7,49 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-    <link rel="stylesheet" href="../styles/bootstrap.min (3).css">
+    <link rel="stylesheet" href="../styles/flatly.css">
 
     <title>Welcome</title>
   </head>
   <body>
     <!-- Using php sessions to display an error message if the user has an incorrect password or an issue with their password when signing up -->
     <?php
-        require("user.php");
-        if (isset($_SESSION["index_error"])){
-            if ($_SESSION["index_error"]=="1"){
+        session_start();
+        if (isset($_SESSION["notification"])){
+            if ($_SESSION["notification"]=="1"){
                 echo '<div class="alert alert-dismissible alert-danger">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     <strong>Oh no! </strong>Your password is incorrect!
-                </div>';               
+                </div>';         
+                      
             }
-            else if ($_SESSION["index_error"]=="2"){
+            else if ($_SESSION["notification"]=="2"){
                 echo '<div class="alert alert-dismissible alert-danger">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     <strong>Oh no! </strong>Your passwords did not match!
                 </div>';
             }
-            else if ($_SESSION["index_error"]=="3"){
+            else if ($_SESSION["notification"]=="3"){
                 echo '<div class="alert alert-dismissible alert-danger">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     <strong>Oh no! </strong>The email you entered is already associated with an account!
                 </div>';
             }
+            else if ($_SESSION["notification"]=="4"){
+                echo '<div class="alert alert-dismissible alert-success">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>Success! </strong>Your account has been created!
+                </div>';
+            }
+            else if ($_SESSION["notification"]=="9"){
+                echo '<div class="alert alert-dismissible alert-success">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    You have been logged out!
+                </div>';
+            }
         }
-        else {
-            $_SESSION["index_error"]="";
-        }
+        $_SESSION["notification"]="";
+        
     ?>
     <div class="container">
       <div class="row pt-5">
@@ -48,17 +60,17 @@
         <ul class="nav nav-tabs" role="tablist">
             <image src="../images/logo.png" alt="logo" height="40px" class="pr-1">
             <li class="nav-item" role="presentation">
-                <a class="nav-link <?php if ($_SESSION["index_error"]=="1" || $_SESSION["index_error"]==""){
+                <a class="nav-link <?php if ($_SESSION["notification"]=="1" || $_SESSION["notification"]==""){
                 echo "active";}?>" data-bs-toggle="tab" href="#login" aria-selected="true" role="tab" tabindex="-1">Login</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link <?php if ($_SESSION["index_error"]=="2" || $_SESSION["index_error"]=="3"){
+                <a class="nav-link <?php if ($_SESSION["notification"]=="2" || $_SESSION["notification"]=="3"){
                 echo "active";}?>" data-bs-toggle="tab" href="#signup" aria-selected="false" role="tab">Sign Up</a>
             </li>
             </ul>
-            <!-- forms for login and sign up -->
+            <!-- form for login -->
             <div id="myTabContent" class="tab-content">
-            <div class="tab-pane fade <?php if ($_SESSION["index_error"]=="1" || $_SESSION["index_error"]==""){
+            <div class="tab-pane fade <?php if ($_SESSION["notification"]=="1" || $_SESSION["notification"]==""){
                 echo "active show";}?> " id="login" role="tabpanel">
                 <form action="login-action.php" method="post">
                     <div class="form-group">
@@ -72,7 +84,8 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-            <div class="tab-pane fade <?php if ($_SESSION["index_error"]=="2" || $_SESSION["index_error"]=="3"){
+            <!-- form for sign up -->
+            <div class="tab-pane fade <?php if ($_SESSION["notification"]=="2" || $_SESSION["notification"]=="3"){
                 echo "active show";}?>" id="signup" role="tabpanel">
                 <form action="signup-action.php" method="post">
                     <div class="form-group">
@@ -129,5 +142,5 @@
 </html>
 <?php
 //unsets the password error
-$_SESSION["index_error"]="";
+$_SESSION["notification"]="";
 ?>

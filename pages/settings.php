@@ -22,7 +22,32 @@ else {
         <title>Settings</title>
     </head>
     <body>
-    <?php include "nav.php"; ?>
+    <?php 
+    
+        include "nav.php"; 
+        if (isset($_SESSION["notification"])){
+            if ($_SESSION["notification"]=="8"){
+                echo '<div class="alert alert-dismissible alert-success">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>Success! </strong>Your setting has been updated!
+                </div>';
+            }
+            else if ($_SESSION["notification"]=="2"){
+                echo '<div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>Oh no! </strong>Your new passwords did not match!
+                </div>';
+            }
+            else if ($_SESSION["notification"]=="7"){
+                echo '<div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>Oh no! </strong>Your old password was incorrect!
+                </div>';
+            }
+
+            $_SESSION["notification"]="";
+        }
+    ?>
     <div class="container">
       <div class="row pt-5">
         <div class="col-md-3">
@@ -42,7 +67,7 @@ else {
                                 <input required type="text" class="form-control" id="first_name" name="first_name" placeholder="<?php echo $user->first_name?>" readonly="">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#firstname">Edit</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#firstname">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -59,7 +84,7 @@ else {
                                 <input required type="text" class="form-control" id="last_name" name="last_name" placeholder="<?php echo $user->last_name?>" readonly="">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lastname">Edit</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#lastname">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -76,7 +101,7 @@ else {
                                 <input required type="text" class="form-control" id="email" name="email" placeholder="<?php echo $user->email?>" readonly="">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#emailmodal">Edit</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#emailmodal">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -93,7 +118,7 @@ else {
                                 <input required type="text" class="form-control" id="country_label" name="country" placeholder="<?php echo $user->country?>" readonly="">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#countrymodal">Edit</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#countrymodal">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +135,7 @@ else {
                                 <input required type="text" class="form-control" id="postcode_label" name="postcode" placeholder="<?php echo $user->postcode?>" readonly="">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#postcodemodal">Edit</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postcodemodal">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -124,7 +149,7 @@ else {
                         <label for="preferences">Preferences</label>
                         <div class="row">
                             <div class="col-md-10">
-                                <button type="button" id="preferences" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#preferencesmodal" style="width:95%;">Edit Preferences</button>
+                                <button type="button" id="preferences" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#preferencesmodal" style="width:95%;">Edit Preferences</button>
                             </div>
                         </div>
                     </div>
@@ -138,7 +163,7 @@ else {
                         <label for="theme">Theme</label>
                         <div class="row">
                             <div class="col-md-10">
-                                <button type="button" id="theme" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#thememodal" style="width:95%;">Edit Theme</button>
+                                <button type="button" id="theme" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#thememodal" style="width:95%;">Edit Theme</button>
                             </div>
                         </div>
                     </div>
@@ -152,7 +177,7 @@ else {
                         <label for="password">Password</label>
                         <div class="row">
                             <div class="col-md-10">
-                                <button type="button" id="password" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#passwordmodal" style="width:95%;">Edit Password</button>
+                                <button type="button" id="password" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordmodal" style="width:95%;">Edit Password</button>
                             </div>
                         </div>
                     </div>
@@ -292,6 +317,24 @@ else {
                                     Humidity
                                     </label>
                                 </div>
+                                <div class="form-check">
+                                    <input class="form-check-input"  type="checkbox" value="" id="sun" name="sun" <?php if ($user->preferences["sun"] =="1"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="sun">
+                                    Sun Rise and Set
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input"  type="checkbox" value="" id="visibility" name="visibility" <?php if ($user->preferences["visibility"] =="1"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="visibility">
+                                    Visibility
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input"  type="checkbox" value="" id="precipitation" name="precipitation" <?php if ($user->preferences["precipitation"] =="1"){echo 'checked=""';}?>>
+                                    <label class="form-check-label" for="precipitation">
+                                    Precipitation
+                                    </label>
+                                </div>
 
                             </fieldset>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -300,6 +343,7 @@ else {
                 </div>
             </div>
         </div>
+
 
         <!-- Modal for the Theme selection -->
         <div class="modal fade" id="thememodal" tabindex="-1" aria-labelledby="theme_label" aria-hidden="true">

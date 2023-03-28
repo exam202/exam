@@ -1,4 +1,5 @@
 <?php 
+//ensures the user is logged in and sends them to the login page if they are not
 require "./user.php";
 $conn = connect();
 if (isset($_SESSION["user"]) == false){
@@ -24,42 +25,57 @@ else {
     </head>
     
     <body>
-        <?php include "nav.php"; ?>
+        <?php include "nav.php";
+        if ($_SESSION["notification"]=="10"){
+          echo 
+          '<div class="alert alert-dismissible alert-success">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              Graph has been updated!
+          </div>';
+        } 
+        ?>
+      
         <div class="container">
             <div class="row pt-3">  
                 <div class="col-md-6 px-1 py-1">
-                    <div class="card" style="height:500px">
+                    <div class="shadow card" style="height:500px">
                         <div class="card-body">
+                            <!-- chart location for calories -->
                             <div id="caloriesChart">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 px-1 py-1">
-                    <div class="card" style="height:500px">
+                    <div class="shadow card" style="height:500px">
                         <div class="card-body">
+                            <!-- chart location for steps -->
                             <div id="stepsChart">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 px-1 py-1">
-                    <div class="card" style="height:100%">
+                    <div class="shadow card" style="height:100%">
                         <div class="card-body">
-                        <h3 class="card-title">Edit Time Period on Graphs</h3>
-                            <form method="POST">
+                        <h3 class="card-title pl">Edit Time Period on Graphs</h3>
+                            <!-- form for changing the time period -->
+                            <form action="health-action.php" method="POST">
+                              <div class="form-check">
                                 <label for="days">Enter Amount of Days:</label>
                                 <input type="int" id="days" name="days" required>
                                 <button type="submit" class="btn btn-primary btn-sm">Change</button>
+                              </div>
                             </form>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-md-6 px-1 py-1">
-                    <div class="card">
+                    <div class="shadow card">
                         <div class="card-body">
                             <h3 class="card-title">Enter your health data</h3>
+                            <!-- form for entering health data -->
                             <form action="health-action.php" method="POST">
                                 <div class="form-check">
                                     <label for="date">Enter the date:</label>
@@ -89,10 +105,10 @@ else {
       <!-- Getting the data -->
       <?php 
 
-      $sql = "SELECT * FROM health_tracker WHERE user_id = '$user->id'";
+      $sql = "SELECT * FROM health_tracker WHERE user_id = '$user->id' ORDER BY date DESC";
       $result = mysqli_query($conn,$sql);
-      if (isset($_POST["days"])){
-        $difference = $_POST["days"]; 
+      if (isset($_SESSION["days"])){
+        $difference = $_SESSION["days"];
       }
       else {
         $difference = 7;
@@ -118,7 +134,7 @@ else {
       window.onload = function() {
 
       // Plotting the graph for calories burnt
-      $title = "Calories Burnt - " , <?php echo $difference?> , "Days";
+      var $title = "Calories Burnt - <?php echo $difference?> Days";
       var caloriesChart = new CanvasJS.Chart("caloriesChart", {
         animationEnabled: true,
         title:{
@@ -140,7 +156,7 @@ else {
       });
 
       // Plotting the graph for steps taken
-      $title = "Steps Taken - " , <?php echo $difference?> , "Days";
+      var $title = "Steps Taken - <?php echo $difference?> Days";
       var stepsChart = new CanvasJS.Chart("stepsChart", {
         animationEnabled: true,
         title:{

@@ -6,6 +6,7 @@ if (isset($_SESSION["user"]) == false){
 else {
     $user = User::load_by_id($_SESSION["user"]);
 }
+$conn = connect();
 ?>
 
 <!doctype html>
@@ -23,85 +24,98 @@ else {
   </head>
   
   <body>
-    <?php include "nav.php"; 
-
-
-    // Get weather and air quality data from weatherapi.com API
-
-    if(isset($_POST['location'])) { // If user has entered a location
-    $location = str_replace(' ', '', $_POST['location']); // Remove spaces from input
+    <?php include "nav.php";
+    // Checks if the user has submitted a report and displays a notification if they have
+    if (isset($_SESSION["notification"])){
+        if ($_SESSION["notification"]=="5"){
+            echo '<div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                Your report has been submitted!
+            </div>';               
+            $_SESSION["notification"]="";
+        }
+        
     }
     else {
-        $location = str_replace(' ', '', $user->postcode); // If user hasnt entered a location, use their saved location and remove spaces
+        $_SESSION["notification"]="";
     }
-
-    $apiKey = "19f268e57a9f47c6bc0131424230803"; 
-    $url = "https://api.weatherapi.com/v1/forecast.json?key=$apiKey&q=$location&aqi=yes";
-
-    // Use cURL to retrieve data from API
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $data = curl_exec($ch);
-
-    if($data === false) {
-        echo "Error retrieving data from API: " . curl_error($ch);
-    } else {
-        $weatherData = json_decode($data, true);
-        
-        if($weatherData === null || isset($weatherData['error'])) {
-        echo "Error retrieving data from API: " . $weatherData['error']['message'];
-        } 
-        else {
-        // Extract relevant data from API response
-        $city = $weatherData['location']['name'];
-        $region = $weatherData['location']['region'];
-        $country = $weatherData['location']['country'];
-        $tempC = $weatherData['current']['temp_c'];
-        $condition = $weatherData['current']['condition']['text'];
-        $icon = $weatherData['current']['condition']['icon'];
-        $humidity = $weatherData['current']['humidity'];
-        $wind = $weatherData['current']['wind_mph'];
-        
-        $uv_level = $weatherData['current']['uv'];
-        $aqi = $weatherData['current']['air_quality']['gb-defra-index'];
-        }
-    }
-
-    curl_close($ch);
     ?>
 
     
 
     <div class="container">
         <div class="row pt-5">  
+            <!-- Weather Card loaded from seperate file -->
             <div class="col-md-6 px-1 py-1">
-                <div class="card" style="height:100%;max-height:300px">
+                <?php include "forecast.php"?>
+            </div>
+            
+            <!-- Weather Tips Card -->
+            <div class="col-md-3 px-1 py-1">
+                <div class="shadow card" style="height:100%;max-height:300px">
                     <div class="card-body">
-                        <h4 class="card-title">Current Weather for <?php echo $city,", ", $region,", ", $country ?></h4>
-                        <h6 class="card-subtitle mb-2 text-muted"><?php echo $condition ?></h6>
-                        <p class="card-text">Temperature: <?php echo $tempC ?></p>
-                        <img src='<?php echo $icon ?>' alt='Weather Icon'><br>
-                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editlocation">Edit Location</button>
+                        <h4 class="card-title">Weather Tips</h4>
+                        <?php 
+                        if (isset($_SESSION["rain"])){
+                            if ($_SESSION["rain"]==true){
+                                echo "<p>We advise you bring a coat with you today.</p>";
+                                $_SESSION["rain"]=="";
+                            } 
+                        }
+                        if (isset($_SESSION["cold"])){
+                            if ($_SESSION["cold"]==true){
+                                echo "<p>We advise you to wear thick layers today.</p>";
+                                $_SESSION["cold"]=="";
+                            }
+                        }
+                        if (isset($_SESSION["hot"])){
+                            if ($_SESSION["hot"]==true){
+                                echo "<p>We advise you to wear thin layers today.</p>";
+                                $_SESSION["hot"]=="";
+                            }
+                        }
+                        ?>
+                        <form method="POST">
+                            <div class="row">
+                            <label for="location">Change Location</label>
+                                <div class="form-group col-md-8">
+                                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" name="submit" class="btn btn-primary">Change</button>
+                                </div>
+                            </div>                            
+                        </form>
                     </div>
                 </div>
+                
             </div>
-            <div class="col-md-6 px-1 py-1">
-                <div class="card" style="height:100%;max-height:300px">
+            <!-- Health Tracker Card -->
+            <div class="col-md-3 px-1 py-1">
+                <div class="shadow card" style="height:100%;max-height:300px">
                     <div class="card-body">
                         <h4 class="card-title">Health Tracker</h4>
                         <a href="health.php">
-                        <img src='../images/health_tracker.png' alt='Weather Icon' style="height:70%"><br>
+                        <img src='../images/health-tracker.png' alt='Weather Icon' style="height:90%"><br>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Displays an error message if the user has entered an incorrect location -->
+        <?php if (isset($_SESSION["notification"]) and $_SESSION["notification"] == "6"){
+                echo 
+                '<div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    You entered a location which is invalid or we cannot provide at the minute! We have displayed the weather for your default location instead.
+                </div>'; 
+            } ?>
         <!-- Checks the user preferences and loads the card for them if the user has them selected -->
         <div class="row">  
+            <!-- Wind Speed -->
             <?php if($user->preferences["wind"] == 1):?>
                 <div class="col-md-3 px-1 py-1">
-                    <div class="card" style="height:100%;max-height:300px">
+                    <div class="shadow card" style="height:100%;max-height:300px">
                         <div class="card-body">
                             <h4 class="card-title">Wind Speed</h4>
                             <h3> <?php echo $wind ?> mph</h3>
@@ -110,9 +124,10 @@ else {
                     </div>
                 </div>
             <?php endif; ?>
+            <!-- Air Quality -->
             <?php if($user->preferences["air_quality"] == 1):?>
                 <div class="col-md-3 px-1 py-1">
-                    <div class="card" style="height:100%;max-height:300px">
+                    <div class="shadow card" style="height:100%;max-height:300px">
                         <div class="card-body">
                             <h4 class="card-title">Air Quality</h4>
                             <h3> <?php echo $aqi ?></h3>
@@ -121,9 +136,10 @@ else {
                     </div>
                 </div>
             <?php endif; ?>
+            <!-- UV Level -->
             <?php if($user->preferences["uv_level"] == 1):?>
                 <div class="col-md-3 px-1 py-1">
-                    <div class="card" style="height:100%;max-height:300px">
+                    <div class="shadow card" style="height:100%;max-height:300px">
                         <div class="card-body">
                             <h4 class="card-title">UV Level</h4>
                             <h3> <?php echo $uv_level?></h3>
@@ -132,9 +148,10 @@ else {
                     </div>
                 </div>
             <?php endif; ?>
+            <!-- Humidity -->
             <?php if($user->preferences["humidity"] == 1):?>
                 <div class="col-md-3 px-1 py-1">
-                    <div class="card" style="height:100%;max-height:300px">
+                    <div class="shadow card" style="height:100%;max-height:300px">
                         <div class="card-body">
                             <h4 class="card-title">Humidity</h4>
                             <h3> <?php echo $humidity?>%</h3>
@@ -143,7 +160,41 @@ else {
                     </div>
                 </div>
             <?php endif; ?>
-                
+            <!-- Sunset and sunrise -->
+            <?php if($user->preferences["sun"] == 1):?>
+                <div class="col-md-3 px-1 py-1">
+                    <div class="shadow card" style="height:100%;max-height:300px">
+                        <div class="card-body">
+                            <h4 class="card-title">Sunrise</h4>
+                            <h3> <?php echo $sunrise?></h3>
+                            <h4 class="card-title">Sunset</h4>
+                            <h3> <?php echo $sunset?></h3>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <!-- Visibility -->
+            <?php if($user->preferences["visibility"] == 1):?>
+                <div class="col-md-3 px-1 py-1">
+                    <div class="shadow card" style="height:100%;max-height:300px">
+                        <div class="card-body">
+                            <h4 class="card-title">Visibility</h4>
+                            <h3> <?php echo $visibility?> Miles</h3>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <!-- Precipitation -->
+            <?php if($user->preferences["precipitation"] == 1):?>
+                <div class="col-md-3 px-1 py-1">
+                    <div class="shadow card" style="height:100%;max-height:300px">
+                        <div class="card-body">
+                            <h4 class="card-title">Total Precipitation</h4>
+                            <h3> <?php echo $precipitation?> mm</h3>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
 
         </div>
     </div>
@@ -178,9 +229,22 @@ else {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>example tip 1</p>
-                    <p>example tip 2</p>
-                    <p>example tip 3</p>
+                    <?php 
+                        // Get the tips from the database and displays them in order of severity 
+                        $sql = "SELECT * FROM tips WHERE preference='wind' ORDER BY severity ASC";
+                        $result = mysqli_query($conn,$sql);
+                        while ($row = $result->fetch_assoc()){
+                            $severity = $row["severity"];
+                            if($severity == 1){
+                                $severity = "High";
+                            }else if($severity == 2){
+                                $severity = "Medium";
+                            }else{
+                                $severity = "Low";
+                            }
+                            echo '<p>'.$row["tip"].' - Severity: '.$severity.'</p>';
+                        }
+                    ?>
                 </div>
             </div>
         </div>    
@@ -195,9 +259,22 @@ else {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>example tip 1</p>
-                    <p>example tip 2</p>
-                    <p>example tip 3</p>
+                    <?php 
+                        // Get the tips from the database and displays them in order of severity 
+                        $sql = "SELECT * FROM tips WHERE preference='air_quality' ORDER BY severity ASC";
+                        $result = mysqli_query($conn,$sql);
+                        while ($row = $result->fetch_assoc()){
+                            $severity = $row["severity"];
+                            if($severity == 1){
+                                $severity = "High";
+                            }else if($severity == 2){
+                                $severity = "Medium";
+                            }else{
+                                $severity = "Low";
+                            }
+                            echo '<p>'.$row["tip"].' - Severity: '.$severity.'</p>';
+                        }
+                    ?>
                 </div>
             </div>
         </div>    
@@ -212,9 +289,22 @@ else {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>example tip 1</p>
-                    <p>example tip 2</p>
-                    <p>example tip 3</p>
+                    <?php 
+                        // Get the tips from the database and displays them in order of severity 
+                        $sql = "SELECT * FROM tips WHERE preference='uv_level' ORDER BY severity ASC";
+                        $result = mysqli_query($conn,$sql);
+                        while ($row = $result->fetch_assoc()){
+                            $severity = $row["severity"];
+                            if($severity == 1){
+                                $severity = "High";
+                            }else if($severity == 2){
+                                $severity = "Medium";
+                            }else{
+                                $severity = "Low";
+                            }
+                            echo '<p>'.$row["tip"].' - Severity: '.$severity.'</p>';
+                        }
+                    ?>
                 </div>
             </div>
         </div>    
@@ -229,9 +319,22 @@ else {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>example tip 1</p>
-                    <p>example tip 2</p>
-                    <p>example tip 3</p>
+                    <?php 
+                        // Get the tips from the database and displays them in order of severity 
+                        $sql = "SELECT * FROM tips WHERE preference='humidity' ORDER BY severity ASC";
+                        $result = mysqli_query($conn,$sql);
+                        while ($row = $result->fetch_assoc()){
+                            $severity = $row["severity"];
+                            if($severity == 1){
+                                $severity = "High";
+                            }else if($severity == 2){
+                                $severity = "Medium";
+                            }else{
+                                $severity = "Low";
+                            }
+                            echo '<p>'.$row["tip"].' - Severity: '.$severity.'</p>';
+                        }
+                    ?>
                 </div>
             </div>
         </div>    
